@@ -14,23 +14,18 @@ pub enum Edit {
   Insert(old_index~ : Int, new_index~ : Int, new_len~ : Int)
   Equal(mut old_index~ : Int, mut new_index~ : Int, mut len~ : Int)
 }
-fn Edit::output(Self, &Logger) -> Unit // from trait `Show`
-fn Edit::to_json(Self) -> Json // from trait `ToJson`
-fn Edit::to_string(Self) -> String // from trait `Show`
 impl Show for Edit
 impl ToJson for Edit
 
 pub struct HunkHeader(Range, Range)
 
+
 fn HunkHeader::new(Array[Edit]) -> Self
-fn HunkHeader::output(Self, &Logger) -> Unit // from trait `Show`
-fn HunkHeader::to_string(Self) -> String // from trait `Show`
 impl Show for HunkHeader
 
 pub struct Range(Int, Int)
 
-fn Range::output(Self, &Logger) -> Unit // from trait `Show`
-fn Range::to_string(Self) -> String // from trait `Show`
+
 impl Show for Range
 
 // Type aliases
