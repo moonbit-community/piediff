@@ -1,32 +1,16 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "myfreess/piediff/plain_diff"
 
-// Values
-fn group_edits(Array[Edit], radius? : Int) -> Array[Array[Edit]]
+import(
+  "myfreess/piediff/edit"
+)
 
-fn[T : Hash + Eq] plain_diff(old~ : Array[T], new~ : Array[T], cutoff? : Int, old_start? : Int, old_end? : Int, new_start? : Int, new_end? : Int) -> Array[Edit]
+// Values
+fn[T : Hash + Eq] plain_diff(old~ : Array[T], new~ : Array[T], cutoff? : Int, old_start? : Int, old_end? : Int, new_start? : Int, new_end? : Int) -> Array[@edit.Edit]
 
 // Errors
 
 // Types and methods
-pub enum Edit {
-  Delete(old_index~ : Int, new_index~ : Int, old_len~ : Int)
-  Insert(old_index~ : Int, new_index~ : Int, new_len~ : Int)
-  Equal(mut old_index~ : Int, mut new_index~ : Int, mut len~ : Int)
-}
-impl Show for Edit
-impl ToJson for Edit
-
-pub struct HunkHeader(Range, Range)
-
-
-fn HunkHeader::new(Array[Edit]) -> Self
-impl Show for HunkHeader
-
-pub struct Range(Int, Int)
-
-
-impl Show for Range
 
 // Type aliases
 

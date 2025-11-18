@@ -1,0 +1,32 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "myfreess/piediff/edit"
+
+// Values
+fn group_edits(Array[Edit], radius? : Int) -> Array[Array[Edit]]
+
+// Errors
+
+// Types and methods
+pub(all) enum Edit {
+  Delete(old_index~ : Int, new_index~ : Int, old_len~ : Int)
+  Insert(old_index~ : Int, new_index~ : Int, new_len~ : Int)
+  Equal(mut old_index~ : Int, mut new_index~ : Int, mut len~ : Int)
+}
+impl Show for Edit
+impl ToJson for Edit
+
+pub struct HunkHeader(Range, Range)
+
+
+fn HunkHeader::new(Array[Edit]) -> Self
+impl Show for HunkHeader
+
+pub struct Range(Int, Int)
+
+
+impl Show for Range
+
+// Type aliases
+
+// Traits
+
