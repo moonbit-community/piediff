@@ -516,7 +516,7 @@ pub fn[T : Hash + Eq] plain_diff(
   new_start? : Int = 0,
   new_end? : Int = new.length(),
 ) -> Array[Edit] {
-  let result = Array::new(capacity=old.length() + new.length())
+  let result : Array[Edit] = Array::new(capacity=old.length() + new.length())
   let mut prev_old_idx = 0
   let mut prev_new_idx = 0
   let mut equal_old_idx = 0

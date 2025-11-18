@@ -1,5 +1,6 @@
 {
     "import": [
-      "myfreess/piediff/plain_diff"
+      "myfreess/piediff/plain_diff",
+      "myfreess/piediff/edit"
     ]
 }

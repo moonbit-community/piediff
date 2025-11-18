@@ -1,5 +1,5 @@
 ///|
-pub enum Edit {
+pub(all) enum Edit {
   Delete(old_index~ : Int, new_index~ : Int, old_len~ : Int)
   Insert(old_index~ : Int, new_index~ : Int, new_len~ : Int)
   Equal(mut old_index~ : Int, mut new_index~ : Int, mut len~ : Int)

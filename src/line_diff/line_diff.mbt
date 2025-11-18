@@ -4,9 +4,9 @@ pub fn line_diff(old~ : StringView, new~ : StringView) -> String {
   let old = lines(old)
   let new = lines(new)
   let edits = @plain_diff.plain_diff(old~, new~)
-  let hunks = @plain_diff.group_edits(edits)
+  let hunks = @edit.group_edits(edits)
   for hunk in hunks {
-    let header = @plain_diff.HunkHeader::new(hunk)
+    let header = @edit.HunkHeader::new(hunk)
     buf.write_string(header.to_string())
     buf.write_char('\n')
     for edit in hunk {

@@ -1,1 +1,5 @@
-{}
+{
+    "import": [
+        "myfreess/piediff/edit"
+    ]
+}

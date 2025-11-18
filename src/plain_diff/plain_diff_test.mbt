@@ -37,7 +37,7 @@ test "delete then insert to hunks" {
     ["Insert", { "old_index": 1, "new_index": 1, "new_len": 1 }],
     ["Equal", { "old_index": 2, "new_index": 2, "len": 1 }],
   ])
-  @json.inspect(group_edits(edits), content=[
+  @json.inspect(@edit.group_edits(edits), content=[
     [
       ["Equal", { "old_index": 0, "new_index": 0, "len": 1 }],
       ["Delete", { "old_index": 1, "new_index": 1, "old_len": 1 }],
@@ -64,7 +64,7 @@ test "large text to hunks" {
     ["Insert", { "old_index": 5, "new_index": 5, "new_len": 1 }],
     ["Equal", { "old_index": 6, "new_index": 6, "len": 6 }],
   ])
-  @json.inspect(group_edits(edits), content=[
+  @json.inspect(@edit.group_edits(edits), content=[
     [
       ["Equal", { "old_index": 2, "new_index": 2, "len": 3 }],
       ["Delete", { "old_index": 5, "new_index": 5, "old_len": 1 }],
