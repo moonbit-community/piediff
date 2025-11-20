@@ -1,2 +1,2 @@
 ///|
-using @edit {type Edit, type HunkHeader, type Range}
+using @edit {type Edit}
