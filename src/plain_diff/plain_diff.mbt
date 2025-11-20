@@ -48,7 +48,7 @@ priv struct Partition {
 /// - too_expensive~: computation cost upper limit, preventing algorithm from running too long in difficult cases
 /// - find_minimal~: whether to force finding minimal edit script (regardless of computation cost)
 /// 
-fn[T : Eq] diag(
+fn[T] diag(
   fd~ : FixedArray[Int], // forward search diagonal array - stores farthest reachable point on each diagonal
   bd~ : FixedArray[Int], // backward search diagonal array - stores nearest reachable point on each diagonal
   sh~ : Int, // array index offset - enables arrays to support negative indices
@@ -118,7 +118,7 @@ fn[T : Eq] diag(
         let mut y_cur = x_cur - d // from diagonal relation k = x - y, we get y = x - k
         while x_cur < xlim &&
               y_cur < ylim &&
-              equal_for_diff(xv(x_cur), yv(y_cur)) {
+              physical_equal(xv(x_cur), yv(y_cur)) {
           x_cur += 1
           y_cur += 1
         }
@@ -176,7 +176,7 @@ fn[T : Eq] diag(
         let mut y_cur = x_cur - d
         while x_cur > xoff &&
               y_cur > yoff &&
-              equal_for_diff(xv(x_cur - 1), yv(y_cur - 1)) {
+              physical_equal(xv(x_cur - 1), yv(y_cur - 1)) {
           x_cur -= 1
           y_cur -= 1
         }
@@ -265,7 +265,7 @@ fn[T : Eq] diag(
 
 ///|
 /// Main diff loop that computes the differences between two arrays
-fn[T : Eq] diff_loop(
+fn[T] diff_loop(
   cutoff : Int?, // computation cost threshold
   a : MutArrayView[T], // original array A
   ai : Array[Int], // indices of A elements that exist in B
@@ -328,7 +328,7 @@ fn[T : Eq] diff_loop(
     // This is important optimization of Myers algorithm, reducing data to process
     let mut xoff = xoff
     let mut yoff = yoff
-    while xoff < xlim && yoff < ylim && equal_for_diff(xvec(xoff), yvec(yoff)) {
+    while xoff < xlim && yoff < ylim && physical_equal(xvec(xoff), yvec(yoff)) {
       xoff += 1
       yoff += 1
     }
@@ -338,7 +338,7 @@ fn[T : Eq] diff_loop(
     let mut ylim = ylim
     while xlim > xoff &&
           ylim > yoff &&
-          equal_for_diff(xvec(xlim - 1), yvec(ylim - 1)) {
+          physical_equal(xvec(xlim - 1), yvec(ylim - 1)) {
       xlim -= 1
       ylim -= 1
     }
@@ -401,7 +401,7 @@ fn[T : Eq] diff_loop(
 /// different. This improves the speed much. At the same time, this function updates the
 /// items of `a` and `b` so that all equal items point to the same unique item.
 /// 
-/// All item comparisons in the main algorithm can therefore be done with `equal_for_diff` 
+/// All item comparisons in the main algorithm can therefore be done with `physical_equal` 
 /// instead of `==`, which can improve speed much.
 fn[T : Eq + Hash] make_indexer(
   a : MutArrayView[T],
@@ -425,7 +425,7 @@ fn[T : Eq + Hash] make_indexer(
   for i = 0; i < n; i = i + 1 {
     match htb.get(a[i]) {
       Some(v) => {
-        a[i] = v // unify object reference, enabling subsequent comparison with equal_for_diff
+        a[i] = v // unify object reference, enabling subsequent comparison with physical_equal
         ai[k] = i // record original index of this element
         k += 1
       }

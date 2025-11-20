@@ -1,4 +1,5 @@
 ///|
+#alias(Pile)
 priv struct Stack[T] {
   mut top : T
   mut stack : @list.List[T]

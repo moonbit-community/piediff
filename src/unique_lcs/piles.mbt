@@ -1,7 +1,4 @@
 ///|
-type Pile[T] = Stack[T]
-
-///|
 priv struct Piles[T](Array[Pile[T]])
 
 ///|
