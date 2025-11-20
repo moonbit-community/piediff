@@ -12,8 +12,15 @@ pub(all) enum Edit {
   Insert(old_index~ : Int, new_index~ : Int, new_len~ : Int)
   Equal(mut old_index~ : Int, mut new_index~ : Int, mut len~ : Int)
 }
+fn Edit::tag(Self) -> EditTag
 impl Show for Edit
 impl ToJson for Edit
+
+pub enum EditTag {
+  Del
+  Ins
+  Eql
+}
 
 pub struct HunkHeader(Range, Range)
 

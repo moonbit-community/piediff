@@ -6,6 +6,22 @@ pub(all) enum Edit {
 } derive(Show, ToJson)
 
 ///|
+pub enum EditTag {
+  Del
+  Ins
+  Eql
+}
+
+///|
+pub fn Edit::tag(self : Edit) -> EditTag {
+  match self {
+    Insert(_) => Ins
+    Delete(_) => Del
+    Equal(_) => Eql
+  }
+}
+
+///|
 fn Edit::old_range(self : Edit) -> (Int, Int) {
   match self {
     Insert(old_index~, ..) => (old_index, old_index)
