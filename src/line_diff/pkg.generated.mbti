@@ -1,8 +1,12 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "myfreess/piediff/line_diff"
 
+import(
+  "myfreess/piediff/edit"
+)
+
 // Values
-fn line_diff(old~ : StringView, new~ : StringView) -> String
+fn line_diff(old~ : StringView, new~ : StringView) -> Array[(@edit.HunkHeader, Array[(@edit.EditTag, StringView)])]
 
 // Errors
 
