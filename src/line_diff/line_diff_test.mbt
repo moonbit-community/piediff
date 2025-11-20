@@ -1,4 +1,25 @@
 ///|
+fn print_hunks(
+  hunks : Array[(@edit.HunkHeader, Array[(@edit.EditTag, StringView)])],
+) -> String {
+  let buf = StringBuilder::new()
+  for hunk in hunks {
+    buf.write_string(hunk.0.to_string())
+    buf.write_char('\n')
+    for edit in hunk.1 {
+      match edit.0 {
+        Ins => buf.write_string(" + ")
+        Del => buf.write_string(" - ")
+        Eql => buf.write_string("   ")
+      }
+      buf.write_stringview(edit.1)
+      buf.write_char('\n')
+    }
+  }
+  buf.to_string()
+}
+
+///|
 test "insert/delete in middle" {
   let old =
     #|fn main() {
@@ -9,7 +30,7 @@ test "insert/delete in middle" {
     #|  println("bar")
     #|}
   inspect(
-    line_diff(old~, new~),
+    print_hunks(line_diff(old~, new~)),
     content=(
       #|@@ -1,3 +1,3 @@
       #|   fn main() {
@@ -28,7 +49,7 @@ test "identical inputs" {
     #|b
     #|c
   let new = old
-  inspect(line_diff(old~, new~), content="")
+  inspect(print_hunks(line_diff(old~, new~)), content="")
 }
 
 ///|
@@ -41,7 +62,7 @@ test "insert at beginning" {
     #|b
     #|c
   inspect(
-    line_diff(old~, new~),
+    print_hunks(line_diff(old~, new~)),
     content=(
       #|@@ -1,2 +1,3 @@
       #| + a
@@ -62,7 +83,7 @@ test "insert at end" {
     #|b
     #|c
   inspect(
-    line_diff(old~, new~),
+    print_hunks(line_diff(old~, new~)),
     content=(
       #|@@ -1,2 +1,3 @@
       #|   a
@@ -83,7 +104,7 @@ test "delete at beginning" {
     #|b
     #|c
   inspect(
-    line_diff(old~, new~),
+    print_hunks(line_diff(old~, new~)),
     content=(
       #|@@ -1,3 +1,2 @@
       #| - a
@@ -104,7 +125,7 @@ test "delete at end" {
     #|a
     #|b
   inspect(
-    line_diff(old~, new~),
+    print_hunks(line_diff(old~, new~)),
     content=(
       #|@@ -1,3 +1,2 @@
       #|   a
@@ -128,7 +149,7 @@ test "blank lines and unicode" {
     #|世
     #|界
   inspect(
-    line_diff(old~, new~),
+    print_hunks(line_diff(old~, new~)),
     content=(
       #|@@ -1,4 +1,4 @@
       #|   
@@ -150,7 +171,7 @@ test "no trailing newline behavior" {
     #|last
   let new =
     #|last
-  inspect(line_diff(old~, new~), content="")
+  inspect(print_hunks(line_diff(old~, new~)), content="")
 }
 
 ///|
@@ -166,7 +187,7 @@ test "multiple insert/delete" {
     #|tomato
     #|pineapple
   inspect(
-    line_diff(old~, new~),
+    print_hunks(line_diff(old~, new~)),
     content=(
       #|@@ -1,4 +1,4 @@
       #| - carrot
@@ -210,7 +231,7 @@ test "large text with small hunk" {
     #|dot
     #|bottom
   inspect(
-    line_diff(old~, new~),
+    print_hunks(line_diff(old~, new~)),
     content=(
       #|@@ -3,7 +3,7 @@
       #|   brave

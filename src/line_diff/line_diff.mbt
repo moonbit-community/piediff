@@ -1,36 +1,34 @@
 ///|
-pub fn line_diff(old~ : StringView, new~ : StringView) -> String {
-  let buf = StringBuilder::new(size_hint=(old.length() + new.length()) * 3 / 2)
+pub fn line_diff(
+  old~ : StringView,
+  new~ : StringView,
+) -> Array[(@edit.HunkHeader, Array[(@edit.EditTag, StringView)])] {
   let old = lines(old)
   let new = lines(new)
+  let result = Array::new(capacity=old.length() + new.length())
   let edits = @plain_diff.plain_diff(old~, new~)
   let hunks = @edit.group_edits(edits)
   for hunk in hunks {
     let header = @edit.HunkHeader::new(hunk)
-    buf.write_string(header.to_string())
-    buf.write_char('\n')
+    let edits = Array::new(capacity=hunk.length())
     for edit in hunk {
+      let tag = edit.tag()
       match edit {
         Delete(old_index~, old_len~, ..) =>
           for i in 0..<old_len {
-            buf.write_string(" - ")
-            buf.write_stringview(old[old_index + i].text)
-            buf.write_char('\n')
+            edits.push((tag, old[old_index + i].text))
           }
         Insert(new_index~, new_len~, ..) =>
           for i in 0..<new_len {
-            buf.write_string(" + ")
-            buf.write_stringview(new[new_index + i].text)
-            buf.write_char('\n')
+            edits.push((tag, new[new_index + i].text))
           }
         Equal(old_index~, len~, ..) =>
           for i in 0..<len {
-            buf.write_string("   ")
-            buf.write_stringview(old[old_index + i].text)
-            buf.write_char('\n')
+            edits.push((tag, old[old_index + i].text))
           }
       }
     }
+    result.push((header, edits))
   }
-  buf.to_string()
+  result
 }
