@@ -3,8 +3,6 @@
         "myfreess/piediff/edit"
     ],
     "targets": {
-        "equal_js.mbt" : ["js"],
-        "equal_nonjs.mbt" : ["not", "js"],
         "indexer_wbtest.mbt" : ["not", "js"]
     }
 }
