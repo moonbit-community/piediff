@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "myfreess/piediff/edit"
+package "moonbit-community/piediff/edit"
 
 // Values
 pub fn group_edits(Array[Edit], radius? : Int) -> Array[Array[Edit]]

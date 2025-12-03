@@ -1,8 +1,8 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "myfreess/piediff/plain_diff"
+package "moonbit-community/piediff/plain_diff"
 
 import(
-  "myfreess/piediff/edit"
+  "moonbit-community/piediff/edit"
 )
 
 // Values

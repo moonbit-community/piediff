@@ -1,5 +1,5 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "myfreess/piediff/unique_lcs"
+package "moonbit-community/piediff/unique_lcs"
 
 // Values
 pub fn[T : Eq + Hash] unique_lcs(old~ : ArrayView[T], new~ : ArrayView[T]) -> Array[(Int, Int)]
