@@ -2,10 +2,10 @@
 test "condense into one equal" {
   let old = [
     "apple", "pineapple", "banana", "tomato", "carrot", "tomato", "potato", "cabbage",
-  ]
+  ].mut_view()
   let new = [
     "apple", "pineapple", "banana", "tomato", "carrot", "tomato", "potato", "cabbage",
-  ]
+  ].mut_view()
   assert_eq(old, new)
   inspect(
     plain_diff(old~, new~),
@@ -15,8 +15,8 @@ test "condense into one equal" {
 
 ///|
 test "mixed" {
-  let old = ["carrot", "tomato", "potato", "cabbage"]
-  let new = ["apple", "banana", "tomato", "pineapple"]
+  let old = ["carrot", "tomato", "potato", "cabbage"].mut_view()
+  let new = ["apple", "banana", "tomato", "pineapple"].mut_view()
   @json.inspect(plain_diff(old~, new~), content=[
     ["Delete", { "old_index": 0, "new_index": 0, "old_len": 1 }],
     ["Insert", { "old_index": 0, "new_index": 0, "new_len": 2 }],
@@ -28,8 +28,8 @@ test "mixed" {
 
 ///|
 test "delete then insert to hunks" {
-  let old = ["fn main() {", "  println(\"foo\")", "}"]
-  let new = ["fn main() {", "  println(\"bar\")", "}"]
+  let old = ["fn main() {", "  println(\"foo\")", "}"].mut_view()
+  let new = ["fn main() {", "  println(\"bar\")", "}"].mut_view()
   let edits = plain_diff(old~, new~)
   @json.inspect(edits, content=[
     ["Equal", { "old_index": 0, "new_index": 0, "len": 1 }],
@@ -52,11 +52,11 @@ test "large text to hunks" {
   let old = [
     "alert", "chop", "brave", "arise", "bring", "boy", "answer", "count", "begin",
     "casual", "dot", "bottom",
-  ]
+  ].mut_view()
   let new = [
     "alert", "chop", "brave", "arise", "bring", "joy", "answer", "count", "begin",
     "casual", "dot", "bottom",
-  ]
+  ].mut_view()
   let edits = plain_diff(old~, new~)
   @json.inspect(edits, content=[
     ["Equal", { "old_index": 0, "new_index": 0, "len": 5 }],

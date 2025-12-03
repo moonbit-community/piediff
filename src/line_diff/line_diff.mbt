@@ -3,8 +3,8 @@ pub fn line_diff(
   old~ : StringView,
   new~ : StringView,
 ) -> Array[(@edit.HunkHeader, Array[(@edit.EditTag, StringView)])] {
-  let old = lines(old)
-  let new = lines(new)
+  let old = lines(old).mut_view()
+  let new = lines(new).mut_view()
   let result = Array::new(capacity=old.length() + new.length())
   let edits = @plain_diff.plain_diff(old~, new~)
   let hunks = @edit.group_edits(edits)
