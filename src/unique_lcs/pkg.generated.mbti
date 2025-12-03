@@ -2,7 +2,7 @@
 package "myfreess/piediff/unique_lcs"
 
 // Values
-fn[T : Eq + Hash] unique_lcs(old~ : ArrayView[T], new~ : ArrayView[T]) -> Array[(Int, Int)]
+pub fn[T : Eq + Hash] unique_lcs(old~ : ArrayView[T], new~ : ArrayView[T]) -> Array[(Int, Int)]
 
 // Errors
 

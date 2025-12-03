@@ -2,7 +2,7 @@
 package "myfreess/piediff/edit"
 
 // Values
-fn group_edits(Array[Edit], radius? : Int) -> Array[Array[Edit]]
+pub fn group_edits(Array[Edit], radius? : Int) -> Array[Array[Edit]]
 
 // Errors
 
@@ -12,9 +12,9 @@ pub(all) enum Edit {
   Insert(old_index~ : Int, new_index~ : Int, new_len~ : Int)
   Equal(mut old_index~ : Int, mut new_index~ : Int, mut len~ : Int)
 }
-fn Edit::tag(Self) -> EditTag
-impl Show for Edit
-impl ToJson for Edit
+pub fn Edit::tag(Self) -> EditTag
+pub impl Show for Edit
+pub impl ToJson for Edit
 
 pub enum EditTag {
   Del
@@ -25,13 +25,13 @@ pub enum EditTag {
 pub struct HunkHeader(Range, Range)
 
 
-fn HunkHeader::new(Array[Edit]) -> Self
-impl Show for HunkHeader
+pub fn HunkHeader::new(Array[Edit]) -> Self
+pub impl Show for HunkHeader
 
 pub struct Range(Int, Int)
 
 
-impl Show for Range
+pub impl Show for Range
 
 // Type aliases
 
