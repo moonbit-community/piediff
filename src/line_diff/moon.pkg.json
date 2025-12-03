@@ -1,6 +1,6 @@
 {
     "import": [
-      "myfreess/piediff/plain_diff",
-      "myfreess/piediff/edit"
+      "moonbit-community/piediff/plain_diff",
+      "moonbit-community/piediff/edit"
     ]
 }
