@@ -6,7 +6,7 @@ import(
 )
 
 // Values
-pub fn[T : Hash + Eq] plain_diff(old~ : Array[T], new~ : Array[T], cutoff? : Int, old_start? : Int, old_end? : Int, new_start? : Int, new_end? : Int) -> Array[@edit.Edit]
+pub fn[T : Hash + Eq] plain_diff(old~ : MutArrayView[T], new~ : MutArrayView[T], cutoff? : Int) -> Array[@edit.Edit]
 
 // Errors
 
