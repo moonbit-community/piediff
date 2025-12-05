@@ -8,8 +8,8 @@ pub fn group_edits(Array[Edit], radius? : Int) -> Array[Array[Edit]]
 
 // Types and methods
 pub(all) enum Edit {
-  Delete(old_index~ : Int, new_index~ : Int, old_len~ : Int)
-  Insert(old_index~ : Int, new_index~ : Int, new_len~ : Int)
+  Delete(mut old_index~ : Int, mut new_index~ : Int, mut old_len~ : Int)
+  Insert(mut old_index~ : Int, mut new_index~ : Int, mut new_len~ : Int)
   Equal(mut old_index~ : Int, mut new_index~ : Int, mut len~ : Int)
 }
 pub fn Edit::tag(Self) -> EditTag

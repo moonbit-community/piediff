@@ -1,0 +1,7 @@
+{
+  "import": [
+    "moonbit-community/piediff/edit",
+    "moonbit-community/piediff/unique_lcs",
+    "moonbit-community/piediff/plain_diff"
+  ]
+}
