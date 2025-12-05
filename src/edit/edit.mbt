@@ -1,7 +1,7 @@
 ///|UUID(49fa581c-da0e-483c-ba9d-d36d55609d2f)
 pub(all) enum Edit {
-  Delete(old_index~ : Int, new_index~ : Int, old_len~ : Int)
-  Insert(old_index~ : Int, new_index~ : Int, new_len~ : Int)
+  Delete(mut old_index~ : Int, mut new_index~ : Int, mut old_len~ : Int)
+  Insert(mut old_index~ : Int, mut new_index~ : Int, mut new_len~ : Int)
   Equal(mut old_index~ : Int, mut new_index~ : Int, mut len~ : Int)
 } derive(Show, ToJson)
 
