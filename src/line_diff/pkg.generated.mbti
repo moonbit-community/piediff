@@ -6,7 +6,7 @@ import(
 )
 
 // Values
-pub fn line_diff(old~ : StringView, new~ : StringView) -> Array[(@edit.HunkHeader, Array[(@edit.EditTag, StringView)])]
+pub fn line_diff(old~ : StringView, new~ : StringView, patience? : Bool) -> Array[(@edit.HunkHeader, Array[(@edit.EditTag, StringView)])]
 
 // Errors
 

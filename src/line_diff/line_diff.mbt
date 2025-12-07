@@ -2,11 +2,16 @@
 pub fn line_diff(
   old~ : StringView,
   new~ : StringView,
+  patience? : Bool = false,
 ) -> Array[(@edit.HunkHeader, Array[(@edit.EditTag, StringView)])] {
   let old = lines(old).mut_view()
   let new = lines(new).mut_view()
   let result = Array::new(capacity=old.length() + new.length())
-  let edits = @plain_diff.plain_diff(old~, new~)
+  let edits = if patience {
+    @patience.patience_diff(old~, new~)
+  } else {
+    @plain_diff.plain_diff(old~, new~)
+  }
   let hunks = @edit.group_edits(edits)
   for hunk in hunks {
     let header = @edit.HunkHeader::new(hunk)
