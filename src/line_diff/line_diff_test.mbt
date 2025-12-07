@@ -40,6 +40,17 @@ test "insert/delete in middle" {
       #|
     ),
   )
+  inspect(
+    print_hunks(line_diff(old~, new~, patience=true)),
+    content=(
+      #|@@ -1,3 +1,3 @@
+      #|   fn main() {
+      #| -   println("foo")
+      #| +   println("bar")
+      #|   }
+      #|
+    ),
+  )
 }
 
 ///|UUID(4eaea414-23e0-431d-b79f-ce6e8acc39ce)
@@ -50,6 +61,7 @@ test "identical inputs" {
     #|c
   let new = old
   inspect(print_hunks(line_diff(old~, new~)), content="")
+  inspect(print_hunks(line_diff(old~, new~, patience=true)), content="")
 }
 
 ///|UUID(6d6dc575-1a01-4015-9134-b82e466c8302)
@@ -63,6 +75,16 @@ test "insert at beginning" {
     #|c
   inspect(
     print_hunks(line_diff(old~, new~)),
+    content=(
+      #|@@ -1,2 +1,3 @@
+      #| + a
+      #|   b
+      #|   c
+      #|
+    ),
+  )
+  inspect(
+    print_hunks(line_diff(old~, new~, patience=true)),
     content=(
       #|@@ -1,2 +1,3 @@
       #| + a
@@ -92,6 +114,16 @@ test "insert at end" {
       #|
     ),
   )
+  inspect(
+    print_hunks(line_diff(old~, new~, patience=true)),
+    content=(
+      #|@@ -1,2 +1,3 @@
+      #|   a
+      #|   b
+      #| + c
+      #|
+    ),
+  )
 }
 
 ///|UUID(f14ae326-3eca-479b-9dd4-53e84a098d66)
@@ -113,6 +145,16 @@ test "delete at beginning" {
       #|
     ),
   )
+  inspect(
+    print_hunks(line_diff(old~, new~, patience=true)),
+    content=(
+      #|@@ -1,3 +1,2 @@
+      #| - a
+      #|   b
+      #|   c
+      #|
+    ),
+  )
 }
 
 ///|UUID(d7ed2179-a73f-4591-9466-58042fdd609f)
@@ -126,6 +168,16 @@ test "delete at end" {
     #|b
   inspect(
     print_hunks(line_diff(old~, new~)),
+    content=(
+      #|@@ -1,3 +1,2 @@
+      #|   a
+      #|   b
+      #| - c
+      #|
+    ),
+  )
+  inspect(
+    print_hunks(line_diff(old~, new~, patience=true)),
     content=(
       #|@@ -1,3 +1,2 @@
       #|   a
@@ -161,6 +213,19 @@ test "blank lines and unicode" {
       #|
     ),
   )
+  inspect(
+    print_hunks(line_diff(old~, new~, patience=true)),
+    content=(
+      #|@@ -1,4 +1,4 @@
+      #|   
+      #|   你
+      #| - 
+      #| - 好
+      #| + 世
+      #| + 界
+      #|
+    ),
+  )
 }
 
 ///|UUID(df2c5ee3-d6b4-4a56-9738-d5048b8c9e64)
@@ -172,6 +237,7 @@ test "no trailing newline behavior" {
   let new =
     #|last
   inspect(print_hunks(line_diff(old~, new~)), content="")
+  inspect(print_hunks(line_diff(old~, new~, patience=true)), content="")
 }
 
 ///|UUID(f836bc1b-4596-413e-bb9b-9038213f6667)
@@ -188,6 +254,20 @@ test "multiple insert/delete" {
     #|pineapple
   inspect(
     print_hunks(line_diff(old~, new~)),
+    content=(
+      #|@@ -1,4 +1,4 @@
+      #| - carrot
+      #| + apple
+      #| + banana
+      #|   tomato
+      #| - potato
+      #| - cabbage
+      #| + pineapple
+      #|
+    ),
+  )
+  inspect(
+    print_hunks(line_diff(old~, new~, patience=true)),
     content=(
       #|@@ -1,4 +1,4 @@
       #| - carrot
@@ -232,6 +312,21 @@ test "large text with small hunk" {
     #|bottom
   inspect(
     print_hunks(line_diff(old~, new~)),
+    content=(
+      #|@@ -3,7 +3,7 @@
+      #|   brave
+      #|   arise
+      #|   bring
+      #| - boy
+      #| + joy
+      #|   answer
+      #|   count
+      #|   begin
+      #|
+    ),
+  )
+  inspect(
+    print_hunks(line_diff(old~, new~, patience=true)),
     content=(
       #|@@ -3,7 +3,7 @@
       #|   brave
