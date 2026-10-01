@@ -14,16 +14,14 @@ fn[T : Eq + Hash] unique_lcs(
   new~ : ArrayView[T],
 ) -> ArrayView[(Int, Int)] {
   let matches = find_unique(old~, new~)
-  let piles : Piles[BackPointer[(Int, Int)]] = Array::new(
-    capacity=matches.length(),
-  )
+  let piles : Piles[BackPointer[(Int, Int)]] = Array(capacity=matches.length())
   for place = 0; place < matches.length(); place = place + 1 {
     let (_, new_idx) = matches[place]
     // Each pile top stores `(new_idx, place)`: the candidate tail in `new~`
     // and the position needed to recover the original `(old_idx, new_idx)`
     // pair after backtracking.
     if piles.is_empty() {
-      piles.put_back(BackPointer::{ value: (new_idx, place), prev: None })
+      piles.put_back(BackPointer::{ value: (new_idx, place), prev: None, })
     } else {
       piles.put_by_binary_search(new_idx~, place~)
     }

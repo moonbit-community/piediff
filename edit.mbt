@@ -29,6 +29,9 @@ pub enum Edit {
 } derive(Debug)
 
 ///|
+pub extend Edit with @debug.Debug::{to_repr}
+
+///|
 /// Return the half-open range `[start, end)` covered by this edit in `old`.
 ///
 /// Insertions consume no elements from `old`, so they map to an empty range.
@@ -60,11 +63,11 @@ fn[T] Edit::view_from(
 ) -> ArrayView[T] {
   match self {
     Insert(new_index~, len~, ..) =>
-      new.view(start=new_index, end=new_index + len)
+      new.exact_view(start=new_index, end=new_index + len)
     Delete(old_index~, len~, ..) =>
-      old.view(start=old_index, end=old_index + len)
+      old.exact_view(start=old_index, end=old_index + len)
     Equal(old_index~, len~, ..) =>
-      old.view(start=old_index, end=old_index + len)
+      old.exact_view(start=old_index, end=old_index + len)
   }
 }
 
@@ -84,8 +87,8 @@ fn[T] group_edits(
     return []
   }
   let n = edits.length()
-  let mut pending = Array::new()
-  let result = Array::new()
+  let mut pending = Array()
+  let result = Array()
   for i, edit in edits {
     match edit {
       Equal(old_index~, new_index~, len~) => {
@@ -105,7 +108,7 @@ fn[T] group_edits(
         // Split if this equal range is large enough
         if len > radius * 2 {
           pending.push(Edit::Equal(old_index~, new_index~, len=radius))
-          result.push(Hunk::{ edits: pending, old, new })
+          result.push(Hunk::{ edits: pending, old, new, })
           let offset = len.saturating_sub(radius)
           pending = [
             Edit::Equal(
@@ -122,7 +125,7 @@ fn[T] group_edits(
     }
   }
   if !(pending is [] || pending is [Equal(_)]) {
-    result.push(Hunk::{ edits: pending, old, new })
+    result.push(Hunk::{ edits: pending, old, new, })
   }
   result
 }

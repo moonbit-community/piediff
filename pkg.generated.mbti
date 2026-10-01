@@ -28,6 +28,7 @@ pub enum Edit {
   Insert(old_index~ : Int, new_index~ : Int, len~ : Int)
   Equal(old_index~ : Int, new_index~ : Int, len~ : Int)
 } derive(@debug.Debug)
+pub fn Edit::to_repr(Self) -> @debug.Repr
 
 pub struct Hunk[T] {
   edits : ArrayView[Edit]
@@ -35,18 +36,23 @@ pub struct Hunk[T] {
   new : ArrayView[T]
 }
 pub fn[T] Hunk::header(Self[T]) -> HunkHeader
+pub fn[T : Show] Hunk::output(Self[T], &Logger) -> Unit
+pub fn[T : Show] Hunk::to_string(Self[T]) -> String
 pub impl[T : Show] Show for Hunk[T]
 
 pub struct HunkHeader {
   old : Range
   new : Range
 }
+pub fn HunkHeader::output(Self, &Logger) -> Unit
+pub fn HunkHeader::to_string(Self) -> String
 pub impl Show for HunkHeader
 
 pub struct Range(Int, Int)
+pub fn Range::output(Self, &Logger) -> Unit
+pub fn Range::to_string(Self) -> String
 pub impl Show for Range
 
 // Type aliases
 
 // Traits
-
