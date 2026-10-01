@@ -14,7 +14,7 @@ fn[T] Piles::is_empty(self : Piles[T]) -> Bool {
 ///|
 /// Start a new pile with a single visible card.
 fn[T] Piles::put_back(self : Piles[T], singleton : T) -> Unit {
-  self.0.push(Stack::{ top: singleton, stack: @list.empty() })
+  self.0.push(Stack::{ top: singleton, stack: @list.empty(), })
 }
 
 ///|
@@ -23,7 +23,8 @@ fn[T] Piles::last(self : Piles[T]) -> Pile[T]? {
 }
 
 ///|
-fn[T] Piles::op_get(self : Piles[T], i : Int) -> Pile[T] {
+#alias("_[_]")
+fn[T] Piles::at(self : Piles[T], i : Int) -> Pile[T] {
   self.0[i]
 }
 
@@ -54,12 +55,12 @@ fn Piles::put_by_binary_search(
     // Place the candidate on the next pile; appending a new pile means the
     // candidate extends the longest chain seen so far.
     if lo + 1 < self.0.length() {
-      self[lo + 1].push(BackPointer::{ value: (new_idx, place), prev })
+      self[lo + 1].push(BackPointer::{ value: (new_idx, place), prev, })
     } else {
-      self.put_back(BackPointer::{ value: (new_idx, place), prev })
+      self.put_back(BackPointer::{ value: (new_idx, place), prev, })
     }
   } else {
     // new_idx is smaller than all pile tops; place on pile 0 with no predecessor.
-    self[0].push(BackPointer::{ value: (new_idx, place), prev: None })
+    self[0].push(BackPointer::{ value: (new_idx, place), prev: None, })
   }
 }

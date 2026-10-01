@@ -14,15 +14,15 @@
 
 ///|
 fn[T : Show] edits_to_string(d : @piediff.Diff[T]) -> String {
-  let lines = Array::new()
+  let lines = Array()
   for edit in d.edits {
     let (prefix, slice) = match edit {
       Insert(new_index~, len~, ..) =>
-        ("+", d.new.view(start=new_index, end=new_index + len))
+        ("+", d.new.exact_view(start=new_index, end=new_index + len))
       Delete(old_index~, len~, ..) =>
-        ("-", d.old.view(start=old_index, end=old_index + len))
+        ("-", d.old.exact_view(start=old_index, end=old_index + len))
       Equal(old_index~, len~, ..) =>
-        (" ", d.old.view(start=old_index, end=old_index + len))
+        (" ", d.old.exact_view(start=old_index, end=old_index + len))
     }
     for s in slice {
       lines.push("\{prefix} \{s}")
@@ -358,14 +358,14 @@ test "diff with Bool elements" {
 ///|
 test "diff with struct elements" {
   let old = [
-      { id: 1, name: "alice" },
-      { id: 2, name: "bob" },
-      { id: 3, name: "charlie" },
+      { id: 1, name: "alice", },
+      { id: 2, name: "bob", },
+      { id: 3, name: "charlie", },
     ][:]
   let new = [
-      { id: 1, name: "alice" },
-      { id: 3, name: "charlie" },
-      { id: 4, name: "david" },
+      { id: 1, name: "alice", },
+      { id: 3, name: "charlie", },
+      { id: 4, name: "david", },
     ][:]
   let d = @piediff.Diff(old~, new~)
   let patience = @piediff.Diff(old~, new~, algorithm=@piediff.Patience)

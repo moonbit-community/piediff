@@ -3,6 +3,9 @@
 pub struct Range(Int, Int)
 
 ///|
+pub extend Range with Show::{to_string, output}
+
+///|
 pub impl Show for Range with fn output(self, logger) {
   let mut beginning = self.0 + 1 // from array index to line number
   let len = self.1 - self.0
@@ -59,6 +62,9 @@ fn HunkHeader::HunkHeader(edits : ArrayView[Edit]) -> Self {
 }
 
 ///|
+pub extend HunkHeader with Show::{to_string, output}
+
+///|
 pub impl Show for HunkHeader with fn output(self, logger) {
   logger.write_string("@@ -\{self.old} +\{self.new} @@")
 }
@@ -74,6 +80,9 @@ pub struct Hunk[T] {
 pub fn[T] Hunk::header(self : Hunk[T]) -> HunkHeader {
   HunkHeader(self.edits)
 }
+
+///|
+pub extend Hunk with Show::{to_string, output}
 
 ///|
 pub impl[T : Show] Show for Hunk[T] with fn output(self, logger) {
