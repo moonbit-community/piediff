@@ -1,12 +1,12 @@
 ///|
 fn run_diag_range(
-  old : Array[Int],
-  new : Array[Int],
-  lhs_offset : Int,
-  lhs_limit : Int,
-  rhs_offset : Int,
-  rhs_limit : Int,
-  too_expensive : Int,
+  old : Array[Int32],
+  new : Array[Int32],
+  lhs_offset : Int32,
+  lhs_limit : Int32,
+  rhs_offset : Int32,
+  rhs_limit : Int32,
+  too_expensive : Int32,
   find_minimal : Bool,
 ) -> Partition {
   let forward_search_diagonal = FixedArray::make(
@@ -35,9 +35,9 @@ fn run_diag_range(
 
 ///|
 fn run_diag(
-  old : Array[Int],
-  new : Array[Int],
-  too_expensive : Int,
+  old : Array[Int32],
+  new : Array[Int32],
+  too_expensive : Int32,
   find_minimal : Bool,
 ) -> Partition {
   run_diag_range(
@@ -53,7 +53,11 @@ fn run_diag(
 }
 
 ///|
-fn patterned_array(length : Int, shift : Int, modulo : Int) -> Array[Int] {
+fn patterned_array(
+  length : Int32,
+  shift : Int32,
+  modulo : Int32,
+) -> Array[Int32] {
   let result = Array::make(length, 0)
   for i = 0; i < length; i = i + 1 {
     result[i] = (i + shift) % modulo

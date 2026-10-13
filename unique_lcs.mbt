@@ -12,9 +12,11 @@
 fn[T : Eq + Hash] unique_lcs(
   old~ : ArrayView[T],
   new~ : ArrayView[T],
-) -> ArrayView[(Int, Int)] {
+) -> ArrayView[(Int32, Int32)] {
   let matches = find_unique(old~, new~)
-  let piles : Piles[BackPointer[(Int, Int)]] = Array(capacity=matches.length())
+  let piles : Piles[BackPointer[(Int32, Int32)]] = Array(
+    capacity=matches.length(),
+  )
   for place = 0; place < matches.length(); place = place + 1 {
     let (_, new_idx) = matches[place]
     // Each pile top stores `(new_idx, place)`: the candidate tail in `new~`

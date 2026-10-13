@@ -12,6 +12,6 @@ priv struct Stack[T] {
 ///|
 /// Push a new card onto the pile, demoting the old top underneath it.
 fn[T] Stack::push(self : Stack[T], t : T) -> Unit {
-  self.stack = self.stack.add(self.top)
+  self.stack = self.stack.prepend(self.top)
   self.top = t
 }

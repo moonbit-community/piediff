@@ -7,7 +7,7 @@ test {
 
 ///|
 test {
-  let old : Array[Int] = []
+  let old : Array[Int32] = []
   let new = []
   @json.json_inspect(find_unique(old~, new~), content=[])
 }
@@ -15,6 +15,6 @@ test {
 ///|
 test {
   let old = [1, 2, 3]
-  let new : Array[Int] = [3, 2, 1]
+  let new : Array[Int32] = [3, 2, 1]
   @json.json_inspect(find_unique(old~, new~), content=[[0, 2], [1, 1], [2, 0]])
 }
