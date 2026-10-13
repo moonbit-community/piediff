@@ -1,6 +1,6 @@
 ///|
 /// Range(<line number>, <length>)
-pub struct Range(Int, Int)
+pub struct Range(Int32, Int32)
 
 ///|
 pub extend Range with Show::{to_string, output}

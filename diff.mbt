@@ -9,8 +9,8 @@
 /// known; similarly for `hi_minimal`.
 #valtype
 priv struct Partition {
-  lhs_midpoint : Int // position of midpoint in sequence lhs
-  rhs_midpoint : Int // position of midpoint in sequence rhs
+  lhs_midpoint : Int32 // position of midpoint in sequence lhs
+  rhs_midpoint : Int32 // position of midpoint in sequence rhs
   lo_minimal : Bool // whether left half is optimal
   hi_minimal : Bool // whether right half is optimal
 }
@@ -51,16 +51,16 @@ priv struct Partition {
 /// - `find_minimal~`: whether to force finding minimal edit script (regardless of computation cost)
 /// 
 fn[T : Eq] diag(
-  forward_search_diagonal~ : FixedArray[Int], // forward search diagonal array - stores farthest reachable point on each diagonal
-  backward_search_diagonal~ : FixedArray[Int], // backward search diagonal array - stores nearest reachable point on each diagonal
-  diagonal_shift~ : Int, // diagonal index shift: store diagonal k at [sh + k], including negative k and k±1/k±2 neighbors
-  lhs_get~ : (Int) -> T, // access function for sequence lhs - supports indirect access and index remapping
-  rhs_get~ : (Int) -> T, // access function for sequence rhs - supports indirect access and index remapping
-  lhs_offset~ : Int, // starting position of sequence lhs - defines left boundary of search window
-  lhs_limit~ : Int, // ending position of sequence lhs - defines right boundary of search window
-  rhs_offset~ : Int, // starting position of sequence rhs - defines upper boundary of search window  
-  rhs_limit~ : Int, // ending position of sequence rhs - defines lower boundary of search window
-  too_expensive~ : Int, // computation cost threshold - use heuristic algorithm when exceeded
+  forward_search_diagonal~ : FixedArray[Int32], // forward search diagonal array - stores farthest reachable point on each diagonal
+  backward_search_diagonal~ : FixedArray[Int32], // backward search diagonal array - stores nearest reachable point on each diagonal
+  diagonal_shift~ : Int32, // diagonal index shift: store diagonal k at [sh + k], including negative k and k±1/k±2 neighbors
+  lhs_get~ : (Int32) -> T, // access function for sequence lhs - supports indirect access and index remapping
+  rhs_get~ : (Int32) -> T, // access function for sequence rhs - supports indirect access and index remapping
+  lhs_offset~ : Int32, // starting position of sequence lhs - defines left boundary of search window
+  lhs_limit~ : Int32, // ending position of sequence lhs - defines right boundary of search window
+  rhs_offset~ : Int32, // starting position of sequence rhs - defines upper boundary of search window  
+  rhs_limit~ : Int32, // ending position of sequence rhs - defines lower boundary of search window
+  too_expensive~ : Int32, // computation cost threshold - use heuristic algorithm when exceeded
   find_minimal~ : Bool, // optimality flag - whether optimal solution must be found
 ) -> Partition {
   // Calculate range of valid diagonals
@@ -280,13 +280,13 @@ fn[T : Eq] diag(
 ///|
 /// Main diff loop that computes the differences between two arrays
 fn[T : Eq] diff_loop(
-  cutoff : Int?, // computation cost threshold
+  cutoff : Int32?, // computation cost threshold
   lhs : ArrayView[T], // original array lhs
-  lhs_indices : FixedArray[Int], // indices of lhs elements that exist in rhs
+  lhs_indices : FixedArray[Int32], // indices of lhs elements that exist in rhs
   rhs : ArrayView[T], // original array rhs
-  rhs_indices : FixedArray[Int], // indices of rhs elements that exist in lhs
-  n : Int, // number of valid indices (lhs)
-  m : Int, // number of valid indices (rhs)
+  rhs_indices : FixedArray[Int32], // indices of rhs elements that exist in lhs
+  n : Int32, // number of valid indices (lhs)
+  m : Int32, // number of valid indices (rhs)
 ) -> (FixedArray[Bool], FixedArray[Bool]) {
   // Allocate working arrays for Myers algorithm
   // Array size is n+m+3, sufficient to contain all possible diagonals
@@ -331,10 +331,10 @@ fn[T : Eq] diff_loop(
   // Recursive function: implement divide-and-conquer strategy
   // Recursively apply Myers algorithm to each subregion
   fn loop_recursive(
-    lhs_offset : Int, // starting position of current lhs processing
-    lhs_limit : Int, // ending position of current lhs processing  
-    rhs_offset : Int, // starting position of current rhs processing
-    rhs_limit : Int, // ending position of current rhs processing
+    lhs_offset : Int32, // starting position of current lhs processing
+    lhs_limit : Int32, // ending position of current lhs processing  
+    rhs_offset : Int32, // starting position of current rhs processing
+    rhs_limit : Int32, // ending position of current rhs processing
     find_minimal : Bool, // whether optimal solution needs to be found
   ) -> Unit {
     // Optimization: skip matching prefix
@@ -417,7 +417,7 @@ fn[T : Eq] diff_loop(
 fn[T : Eq + Hash] make_indexer(
   a : ArrayView[T],
   b : ArrayView[T],
-) -> FixedArray[Int] {
+) -> FixedArray[Int32] {
   let n = a.length()
   let present : Map[T, Bool] = Map([], capacity=b.length())
 
@@ -443,7 +443,7 @@ fn[T : Eq + Hash] make_indexer(
 ///|
 /// Main function that computes diff between two arrays
 fn[T : Eq + Hash] diff_(
-  cutoff : Int?,
+  cutoff : Int32?,
   lhs : ArrayView[T],
   rhs : ArrayView[T],
 ) -> (FixedArray[Bool], FixedArray[Bool]) {
@@ -465,10 +465,10 @@ fn[T : Eq + Hash] diff_(
 /// `cutoff` is exceeded, `iter_matches` returns a correct, but not necessarily minimal
 /// diff. It defaults to about `sqrt(old.length() + new.length())`.
 fn[T : Eq + Hash] iter_matches(
-  cutoff~ : Int?, // optional computation cost limit
+  cutoff~ : Int32?, // optional computation cost limit
   old~ : ArrayView[T], // original array
   new~ : ArrayView[T], // new array
-) -> Iter2[Int, Int] {
+) -> Iter2[Int32, Int32] {
   // First compute difference markers
   let (d1, d2) = diff_(cutoff, old, new)
   let mut i1 = 0
@@ -507,12 +507,12 @@ fn[T : Eq + Hash] iter_matches(
 
 ///|
 fn[T : Eq + Hash] append_myers_matches(
-  matches : Array[(Int, Int)],
-  cutoff : Int?,
+  matches : Array[(Int32, Int32)],
+  cutoff : Int32?,
   old : ArrayView[T],
   new : ArrayView[T],
-  old_offset : Int,
-  new_offset : Int,
+  old_offset : Int32,
+  new_offset : Int32,
 ) -> Unit {
   for old_idx, new_idx in iter_matches(cutoff~, old~, new~) {
     matches.push((old_offset + old_idx, new_offset + new_idx))
@@ -521,12 +521,12 @@ fn[T : Eq + Hash] append_myers_matches(
 
 ///|
 fn[T : Eq + Hash] append_patience_matches(
-  matches : Array[(Int, Int)],
-  cutoff : Int?,
+  matches : Array[(Int32, Int32)],
+  cutoff : Int32?,
   old : ArrayView[T],
   new : ArrayView[T],
-  old_offset : Int,
-  new_offset : Int,
+  old_offset : Int32,
+  new_offset : Int32,
 ) -> Unit {
   let anchors = unique_lcs(old~, new~)
   if anchors.length() == 0 {
@@ -573,11 +573,11 @@ pub(all) enum DiffAlgorithm {
 
 ///|
 fn[T : Eq + Hash] collect_matches(
-  cutoff : Int?,
+  cutoff : Int32?,
   old : ArrayView[T],
   new : ArrayView[T],
   algorithm : DiffAlgorithm,
-) -> Array[(Int, Int)] {
+) -> Array[(Int32, Int32)] {
   let matches = Array(capacity=old.length().min(new.length()))
   match algorithm {
     Patience => append_patience_matches(matches, cutoff, old, new, 0, 0)
@@ -610,8 +610,8 @@ pub struct Diff[T] {
 pub fn[T : Hash + Eq] Diff::Diff(
   old~ : ArrayView[T],
   new~ : ArrayView[T],
-  cutoff? : Int,
-  algorithm? : DiffAlgorithm = Myers,
+  cutoff? : Int32,
+  algorithm~ : DiffAlgorithm = Myers,
 ) -> Diff[T] {
   let result : Array[Edit] = Array(capacity=old.length() + new.length())
   let matches = collect_matches(cutoff, old, new, algorithm)
@@ -713,6 +713,6 @@ pub fn[T : Hash + Eq] Diff::Diff(
 }
 
 ///|
-pub fn[T] Diff::group(self : Diff[T], radius? : Int = 3) -> Array[Hunk[T]] {
+pub fn[T] Diff::group(self : Diff[T], radius~ : Int32 = 3) -> Array[Hunk[T]] {
   group_edits(self.edits, radius~, old=self.old, new=self.new)
 }

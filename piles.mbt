@@ -14,7 +14,7 @@ fn[T] Piles::is_empty(self : Piles[T]) -> Bool {
 ///|
 /// Start a new pile with a single visible card.
 fn[T] Piles::put_back(self : Piles[T], singleton : T) -> Unit {
-  self.0.push(Stack::{ top: singleton, stack: @list.empty(), })
+  self.0.push(Stack::{ top: singleton, stack: @list.List([]), })
 }
 
 ///|
@@ -24,7 +24,7 @@ fn[T] Piles::last(self : Piles[T]) -> Pile[T]? {
 
 ///|
 #alias("_[_]")
-fn[T] Piles::at(self : Piles[T], i : Int) -> Pile[T] {
+fn[T] Piles::at(self : Piles[T], i : Int32) -> Pile[T] {
   self.0[i]
 }
 
@@ -35,9 +35,9 @@ fn[T] Piles::at(self : Piles[T], i : Int) -> Pile[T] {
 /// array returned by `find_unique`, so the chosen chain can later be mapped
 /// back to `(old_idx, new_idx)` pairs.
 fn Piles::put_by_binary_search(
-  self : Piles[BackPointer[(Int, Int)]],
-  new_idx~ : Int,
-  place~ : Int,
+  self : Piles[BackPointer[(Int32, Int32)]],
+  new_idx~ : Int32,
+  place~ : Int32,
 ) -> Unit {
   let mut lo = -1
   let mut hi = self.0.length()
