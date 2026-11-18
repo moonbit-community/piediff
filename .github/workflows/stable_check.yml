@@ -1,50 +1,25 @@
-name: stable-check
-
+name: MoonBit
 on:
   push:
-    branches:
-      - main   
+    branches: [main, master]
   pull_request:
-
+permissions:
+  contents: read
 jobs:
-  stable-check:
-    strategy:    
-      fail-fast: false
+  check:
     runs-on: ubuntu-latest
-    continue-on-error: false
+    strategy:
+      fail-fast: false
+      matrix:
+        moonbit: [latest, pre-release]
     steps:
-      - uses: actions/checkout@v4
-
-      - name: install
+      - uses: actions/checkout@v5
+      - name: Install MoonBit
         run: |
-          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
-          echo "$HOME/.moon/bin" >> $GITHUB_PATH
-
-      - name: moon version
-        run: |
-          moon version --all
-
-      - name: moon update
-        run: |
-          moon update
-
-      - name: moon check
-        run: moon check --deny-warn
-
-      - name: format diff
-        run: |
-          moon fmt
-          git diff --exit-code
-      
-      - name: info diff
-        run: |
-          moon info
-          git diff --exit-code
-
-      - name: Set ulimit
-        run: |
-          ulimit -s 8176
-
-      - name: moon test
-        run: |
-          moon test --target all
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash -s -- "${{ matrix.moonbit }}"
+          echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
+      - run: moon version --all
+      - run: moon update
+      - run: moon check --deny-warn --target all
+      - run: moon fmt --check
+      - run: moon test --target all

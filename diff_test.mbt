@@ -37,10 +37,11 @@ fn[T : Show] hunks_to_string(hunks : Array[@piediff.Hunk[T]]) -> String {
 }
 
 ///|
+#derive(Hash, Eq)
 struct User {
   id : Int32
   name : String
-} derive(Hash, Eq)
+}
 
 ///|
 impl Show for User with fn output(self, logger) {
@@ -50,12 +51,13 @@ impl Show for User with fn output(self, logger) {
 }
 
 ///|
+#derive(Hash, Eq)
 enum Token {
   Start
   Stop
   Num(Int32)
   Word(String)
-} derive(Hash, Eq)
+}
 
 ///|
 impl Show for Token with fn output(self, logger) {

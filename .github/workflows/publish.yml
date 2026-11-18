@@ -1,0 +1,29 @@
+name: Publish
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Install MoonBit
+        run: |
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash -s -- latest
+          echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
+      - run: moon update
+      - run: moon check --target all --deny-warn
+      - run: moon test --target all
+      - run: moon fmt --check
+      - name: Publish package
+        env:
+          SECRET: ${{ secrets.MOONCAKES_MOONBIT_COMMUNITY_TOKEN }}
+        run: |
+          test -n "$SECRET" || { echo "Organization publishing secret is unavailable"; exit 1; }
+          umask 077
+          trap 'rm -f "$HOME/.moon/credentials.json"' EXIT
+          printf '%s\n' "$SECRET" > "$HOME/.moon/credentials.json"
+          moon publish --frozen
