@@ -9,6 +9,7 @@ using @debug {type Repr, trait Debug}
 /// inserted, or shared. Storing both coordinates on every step keeps the edit
 /// self-contained, which simplifies deriving hunk headers and grouping edits
 /// into hunks.
+#derive(Debug)
 pub enum Edit {
   /// Delete `len` elements starting at `old_index` from `old`.
   ///
@@ -26,7 +27,7 @@ pub enum Edit {
   /// Keep `len` equal elements starting at `old_index` in `old` and `new_index`
   /// in `new`.
   Equal(old_index~ : Int32, new_index~ : Int32, len~ : Int32)
-} derive(Debug)
+}
 
 ///|
 pub extend Edit with @debug.Debug::{to_repr}
