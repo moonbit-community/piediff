@@ -3,6 +3,8 @@ on:
   push:
     branches: [main, master]
   pull_request:
+env:
+  MOON_SEPARATE_COMPILATION: "1"
 permissions:
   contents: read
 jobs:
